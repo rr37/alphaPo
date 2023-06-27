@@ -57,6 +57,15 @@ orderLists.addEventListener('click', function (event) {
   alphaPos.deleteDrink(event.target.parentElement.parentElement.parentElement)
 })
 
+// 計算總金額
+const checkoutButton = document.querySelector('[data-alpha-pos="checkout"]')
+checkoutButton.addEventListener('click', function () {
+  // 1. 計算訂單總金額
+  alert(`Total amount of drinks：$${alphaPos.checkout()}`)
+  // 2. 清空訂單
+  alphaPos.clearOrder(orderLists)
+})
+
 // Constructor function for Alpha Pos System
 function AlphaPos () { }
 AlphaPos.prototype.getCheckedValue = function (inputName) {
@@ -91,4 +100,18 @@ AlphaPos.prototype.addDrink = function (drink) {
 
 AlphaPos.prototype.deleteDrink = function (target) {
   target.remove()
+}
+
+AlphaPos.prototype.checkout = function () {
+  let totalAmount = 0
+  document.querySelectorAll('[data-drink-price]').forEach(function (drink) {
+    totalAmount += Number(drink.textContent)
+  })
+  return totalAmount
+}
+
+AlphaPos.prototype.clearOrder = function (target) {
+  target.querySelectorAll('.card').forEach(function (card) {
+    card.remove()
+  })
 }
